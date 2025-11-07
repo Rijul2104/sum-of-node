@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
+Node* createList(long num) {
+    Node* head = NULL;
+    Node* tail = NULL;
+
+    while (num > 0) {
+        Node* newNode = new Node();
+        newNode->data = num % 10;
+        newNode->next = NULL;
+
+        if (head == NULL)
+            head = tail = newNode;
+        else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+
+        num = num / 10;
+    }
+    return head;
+}
+
+long addLists(Node* first, Node* second) {
+    long sum = 0, place = 1;
+    while (first != NULL && second != NULL) {
+        int total = first->data + second->data;
+        sum = sum + total * place;
+        place *= 10;
+        first = first->next;
+        second = second->next;
+    }
+    return sum;
+}
+
+int main() {
+    long n1 = 123456789;
+    long n2 = 987654321;
+
+    Node* first = createList(n1);
+    Node* second = createList(n2);
+
+    long result = addLists(first, second);
+
+    cout << "Result (as long integer): " << result << endl;
+    return 0;
+}
