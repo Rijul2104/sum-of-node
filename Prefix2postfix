@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Node for stack
+class Node {
+public:
+    string data;
+    Node* next;
+};
+
+// Stack using linked list
+class Stack {
+    Node* top;
+public:
+    Stack() { top = NULL; }
+
+    void push(string x) {
+        Node* newNode = new Node();
+        newNode->data = x;
+        newNode->next = top;
+        top = newNode;
+    }
+
+    string pop() {
+        if (top == NULL)
+            return "";
+        string x = top->data;
+        top = top->next;
+        return x;
+    }
+
+    bool empty() {
+        return top == NULL;
+    }
+};
+
+// Function to check if character is operator
+bool isOperator(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/');
+}
+
+int main() {
+    string prefix[1];
+    cout << "Enter prefix expression: ";
+    cin >> prefix[0];   // e.g. *+AB-CD
+
+    string exp = prefix[0];
+    Stack s;
+
+    // Read prefix from right to left
+    for (int i = exp.length() - 1; i >= 0; i--) {
+        char c = exp[i];
+
+        if (isOperator(c)) {
+            string op1 = s.pop();
+            string op2 = s.pop();
+            string temp = "(" + op1 + c + op2 + ")";
+            s.push(temp);
+        } else {
+            string op(1, c);
+            s.push(op);
+        }
+    }
+
+    cout << "Infix expression: " << s.pop() << endl;
+    return 0;
+}
