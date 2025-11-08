@@ -1,0 +1,76 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int priority;
+    Node* next;
+};
+
+class PriorityQueue {
+    Node* front;
+
+public:
+    PriorityQueue() {
+        front = NULL;
+    }
+
+    void enqueue(int p) {
+        Node* newNode = new Node();
+        newNode->priority = p;
+        newNode->next = NULL;
+
+        if (front == NULL || p > front->priority) {
+            newNode->next = front;
+            front = newNode;
+        } else {
+            Node* temp = front;
+            while (temp->next != NULL && temp->next->priority >= p)
+                temp = temp->next;
+            newNode->next = temp->next;
+            temp->next = newNode;
+        }
+    }
+
+    void dequeue() {
+        if (front == NULL)
+            cout << "No patients!\n";
+        else {
+            cout << "Patient with priority " << front->priority << " treated.\n";
+            front = front->next;
+        }
+    }
+
+    void display() {
+        if (front == NULL) {
+            cout << "No patients in queue.\n";
+            return;
+        }
+
+        cout << "Patients in queue (by priority): ";
+        Node* temp = front;
+        while (temp != NULL) {
+            cout << temp->priority << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    PriorityQueue pq;
+
+    pq.enqueue(1);
+    pq.enqueue(3);
+    pq.enqueue(2);
+    pq.enqueue(3);
+
+    pq.display();
+
+    pq.dequeue();
+    pq.dequeue();
+
+    pq.display();
+
+    return 0;
+}
