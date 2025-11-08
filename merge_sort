@@ -1,0 +1,70 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+// Function to merge two halves
+void merge(char arr[], int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    char L[n1], R[n2];
+
+    // Copy data to temporary arrays
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+
+    // Merge the two halves back into arr
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k++] = L[i++];
+        } else {
+            arr[k++] = R[j++];
+        }
+    }
+
+    // Copy remaining elements
+    while (i < n1) {
+        arr[k++] = L[i++];
+    }
+    while (j < n2) {
+        arr[k++] = R[j++];
+    }
+}
+
+// Function to perform merge sort
+void mergeSort(char arr[], int left, int right) {
+    if (left < right) {
+        int mid = (left + right) / 2;
+
+        // Sort first and second halves
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+
+        // Merge the sorted halves
+        merge(arr, left, mid, right);
+    }
+}
+
+int main() {
+    char name[100];
+
+    cout << "Enter a name: ";
+    cin >> name; // input name (no spaces)
+
+    int n = strlen(name);
+
+    // Call merge sort
+    mergeSort(name, 0, n - 1);
+
+    cout << "Name after sorting characters alphabetically: ";
+    for (int i = 0; i < n; i++) {
+        cout << name[i];
+    }
+    cout << endl;
+
+    return 0;
+}
