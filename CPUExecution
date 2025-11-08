@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int execTime;
+    Node* next;
+};
+
+int main() {
+    Node* front = NULL;
+    Node* rear = NULL;
+    int time, choice;
+
+    do {
+        cout << "\n1. Add Request";
+        cout << "\n2. Process Request";
+        cout << "\n3. Display Queue";
+        cout << "\n4. Exit";
+        cout << "\nEnter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Enter execution time: ";
+            cin >> time;
+
+            Node* newNode = new Node();
+            newNode->execTime = time;
+            newNode->next = NULL;
+
+            if (rear == NULL) {
+                front = rear = newNode;
+            } else {
+                rear->next = newNode;
+                rear = newNode;
+            }
+
+            cout << "Request added.\n";
+        }
+
+        else if (choice == 2) {
+            if (front == NULL) {
+                cout << "No requests to process.\n";
+            } else {
+                cout << "CPU processing request with time " << front->execTime << endl;
+                front = front->next;
+                if (front == NULL)
+                    rear = NULL;
+            }
+        }
+
+        else if (choice == 3) {
+            if (front == NULL)
+                cout << "No requests in queue.\n";
+            else {
+                cout << "Requests in order: ";
+                Node* temp = front;
+                while (temp != NULL) {
+                    cout << temp->execTime << " ";
+                    temp = temp->next;
+                }
+                cout << endl;
+            }
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
