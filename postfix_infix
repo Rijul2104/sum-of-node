@@ -1,0 +1,84 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+// Node class for linked list
+class Node {
+public:
+    char data[50];
+    Node* next;
+};
+
+// Stack using singly linked list
+class Stack {
+public:
+    Node* top;
+
+    Stack() {
+        top = NULL;
+    }
+
+    // push a string onto stack
+    void push(const char str[]) {
+        Node* temp = new Node();
+        strcpy(temp->data, str);
+        temp->next = top;
+        top = temp;
+    }
+
+    // pop a string from stack
+    void pop(char str[]) {
+        if (top == NULL) return;
+        strcpy(str, top->data);
+        Node* temp = top;
+        top = top->next;
+        delete temp;
+    }
+
+    bool isEmpty() {
+        return (top == NULL);
+    }
+};
+
+// check if symbol is operator
+bool isOperator(char c) {
+    return (c=='+' || c=='-' || c=='*' || c=='/' || c=='^');
+}
+
+// main conversion logic
+int main() {
+    char postfix[50];
+    Stack st;
+    char left[50], right[50], expr[50];
+
+    cout << "Enter Postfix Expression: ";
+    cin >> postfix;
+
+    for (int i = 0; postfix[i] != '\0'; i++) {
+        char c = postfix[i];
+
+        if (isOperator(c)) {
+            st.pop(right);
+            st.pop(left);
+
+            // form new infix: (left operator right)
+            strcpy(expr, "(");
+            strcat(expr, left);
+            int len = strlen(expr);
+            expr[len] = c;
+            expr[len+1] = '\0';
+            strcat(expr, right);
+            strcat(expr, ")");
+
+            st.push(expr);
+        } 
+        else {  // operand
+            char temp[2] = {c, '\0'};
+            st.push(temp);
+        }
+    }
+
+    cout << "Infix Expression: " << st.top->data << endl;
+
+    return 0;
+}
