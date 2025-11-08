@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+class BinaryList {
+    Node* head;
+
+public:
+    BinaryList() {
+        head = nullptr;
+    }
+
+    void insertBit(int bit) {
+        Node* newNode = new Node(bit);
+        if (head == nullptr) {
+            head = newNode;
+        } else {
+            Node* temp = head;
+            while (temp->next != nullptr)
+                temp = temp->next;
+            temp->next = newNode;
+        }
+    }
+
+    void display() {
+        Node* temp = head;
+        while (temp != nullptr) {
+            cout << temp->data;
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+    int toDecimal() {
+        int decimalValue = 0;
+        Node* temp = head;
+        while (temp != nullptr) {
+            // Multiply current decimal value by 2 and add the current bit
+            decimalValue = decimalValue * 2 + temp->data;
+            temp = temp->next;
+        }
+        return decimalValue;
+    }
+};
+
+int main() {
+    BinaryList b;
+    cout << "Enter 8-bit binary number: ";
+    for (int i = 0; i < 8; i++) {
+        int bit;
+        cin >> bit;
+        b.insertBit(bit);
+    }
+
+    cout << "Binary number stored in linked list: ";
+    b.display();
+
+    int decimalValue = b.toDecimal();
+    cout << "Decimal equivalent: " << decimalValue << endl;
+
+    return 0;
+}
